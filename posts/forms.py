@@ -1,9 +1,12 @@
-from django.contrib.auth.forms import forms
+from django import forms
+from .models  import Post
 
 
-class CreatePost(forms.ModelForm):
 
 
-class PostForm(forms. Form):
-    group = forms.Charfield(requiredsFalse)
-    text = forms.Charfield(widgetsforms.Textarea, required=True)
+class CreationForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ("group", "text", "author")
+
+

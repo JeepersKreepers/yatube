@@ -1,8 +1,14 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
 
+
+from .forms import CreationForm
 from .models import Post, Group
+
+
 
 
 def index(request):
@@ -20,15 +26,13 @@ def group_posts(request, slug):
     posts = group.posts.all()[:12]
     return render(request, "group.html", {"group": group, "posts": posts})
 
-@login_required
-def new_post (request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            PostForm() . save ()
-            return redirect('index')
-        context = {'form': form, 'author': Post.author}
-        return render (request, 'new_post.html', context)
-    else:
-        form = PostForm()
-    return render(request, 'new_post.html', {'fork': form})
+
+def new_post(request):
+    """Добавить новую запись, если пользователь известен."""
+    form = CreationForm(request.POST)
+    if form.is_valid():
+        post = form.save(commit=False)
+        post.author = request.user
+        post.save()
+        return HttpResponseRedirect(redirect_to='/')
+    return render(request, 'new_post.html', {'form': form})
