@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}С{% endblock %}
+{% block title %}Создаем новый пост{% endblock %}
 {% block content %}
 {# загружаем фильтр #}
 {% load user_filters %}
@@ -7,7 +7,7 @@
 <div class="row justify-content-center">
     <div class="col-md-8 p-5">
         <div class="card">
-            <div class="card-header"><h1>{{ form.group }}</h1></div>
+            <div class="card-header">Создание поста</div>
             <div class="card-body">
               {% for error in form.errors %}
                   <div class="alert alert-danger" role="alert">
